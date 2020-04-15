@@ -23,13 +23,13 @@ SUCCESS_STATUS = 1
 FAILURE_STATUS = 2
 
 
-VALID_STATUS_CODE = [200]
+VALID_STATUS_CODE = [200,201]
 
 # BATCH_TEST_SIZE = 50
 
 
-BASCI_CYCLE = 300 # 5循环遍历一次
-DETAIL_CYCLE = 300 # 5遍历一次
+BASCI_CYCLE = 300 # 5min循环遍历一次
+DETAIL_CYCLE = 300 # 5min遍历一次
 
 
 BASIC_ENABLED = True
@@ -37,4 +37,13 @@ GETTER_ENABLED = True
 
 
 MAX_WORKERS = 5  # 并行最大数
+
+
+
+SQL_INPUT = False # 从sql中导入keywords
+SINGLE_INPUT = True  # 自己手动添加keywords
+
+
+DELETE_REDIS_KEYWORDS = True  # 删除原先redis库内keywords的数据
+DELETE_REDIS_PARAMS = True   # 删除原先redis库内params的数据
 

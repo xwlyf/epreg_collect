@@ -2,7 +2,6 @@
 from config import *
 import pymysql
 import redis
-import asyncio
 
 class DbCollect:
     def __init__(self):
@@ -54,7 +53,9 @@ class DbCollect:
 
 class RedisDbConn:
     def __init__(self):
-        self.client = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT)
+        pool = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT)
+        self.client = redis.Redis(connection_pool=pool)
+        # self.client = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT)
 
     def get_data(self, status,key=KEYWORDS_REDIS_DB):
         """
@@ -120,3 +121,15 @@ class RedisDbConn:
         """
         result = self.client.zrevrange(key,start,stop)
         return result
+
+
+    def del_db(self,key,status1=0,status2=0):
+        """
+        删除指定状态的数据，不指定为0
+        :param key: redis zset
+        :param status1: 开始状态
+        :param status2: 结束状态
+        :return:
+        """
+        self.client.zremrangebyscore(key,status1,status2)
+        return

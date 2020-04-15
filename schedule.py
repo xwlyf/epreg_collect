@@ -8,11 +8,7 @@ import time
 from loguru import logger
 
 
-class Scheduler():
-    # def __init__(self):
-    #     self.client = RedisDbConn()
-    #     self.init_status = INIT_STATUS
-
+class Scheduler:
 
     def schedule_basic(self,cycle = BASCI_CYCLE):
         """
@@ -20,12 +16,11 @@ class Scheduler():
         :param cycle:
         :return:
         """
-
         basic = EpregAppCollect()
         while True:
             count = RedisDbConn().get_count(INIT_STATUS, PARAMS_REDIS_DB)
             if count > 1000:
-                logger.info("数据库已经有" + count + "的企业详细信息还未采集，基本信息采集暂停")
+                logger.info("数据库已经有" + count + "的企业详细信息还未采集，基本信息采集暂停...")
                 BASIC_ENABLED = False
             else:
                 BASIC_ENABLED = True
@@ -47,6 +42,8 @@ class Scheduler():
                 logger.info("开始抓取企业详细信息~~~~")
                 getter.run()
             time.sleep(cycle)
+
+
 
 
     def run(self):

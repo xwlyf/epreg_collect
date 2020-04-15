@@ -63,11 +63,12 @@ class CrawlUrl:
         """
         time.sleep(random.randint(1,2))
         response = req_data(self.eplisturl, data, page,keyword)
-        if response:
+        if response and '"status":500' not in response:
             json_value = json.loads(response)
             eplistarray = json_value["data"]["result"]["data"]
             if eplistarray:
-                logger.info("目前正在采集~~~~~" + keyword + "的第" + str(page) + "页")
+                recordsTotal = json_value['data']['result']['recordsTotal']  # 列表记录数，判断翻页
+                logger.info("关键词为^^^" + keyword + "一共" + str(recordsTotal) + "条数据......" + "目前正在采集~~~~~" + keyword + "的第" + str(page) + "页")
                 for eplist in eplistarray:
                     guid = str(uuid.uuid4())
                     entName = self.rphtml(eplist['entName'])
@@ -95,8 +96,7 @@ class CrawlUrl:
                     logger.info("成功采集^^^" + entName + "的基本信息...")
                     yield params
 
-                recordsTotal = json_value['data']['result']['recordsTotal']  # 列表记录数，判断翻页
-                logger.info("关键词为^^^" + keyword + "一共" + str(recordsTotal) + "条数据...")
+
                 if recordsTotal / 10 > page:
                     page += 1
                     for req_param in self.collect_data(data, keyword,page):

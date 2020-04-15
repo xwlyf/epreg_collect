@@ -49,8 +49,6 @@ def req_data(url,data,page,keyword,timeout=10,proxies=None):
     用来请求采集网址
     :param data: 请求参数
     :param url: url
-    :param page: 页数
-    :param keyword: 关键词
     :return: html
     """
     count = 1
@@ -80,11 +78,9 @@ async def fetch(session,data,url,entername,timeout=5):
                 if response.status in VALID_STATUS_CODE and len(html) > 100:
                     return html
                 else:
-                    # logger.error("正在尝试重新请求" + url)
                     count +=1
                     time.sleep(1)
         except:
-            # logger.info("正在尝试重新请求" + url)
             count += 1
             time.sleep(1)
     else:
